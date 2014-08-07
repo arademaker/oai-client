@@ -102,9 +102,23 @@
     <xsl:apply-templates select="mods:originInfo" />
     <xsl:apply-templates select="mods:identifier" />
     <dc:language> <xsl:value-of select="mods:language/mods:languageTerm"/> </dc:language>
-    <rdf:type rdf:resource="&bibo;Thesis"/>
-    <bibo:degree rdf:resource="&bibo;degrees/ms" /> 
+    <xsl:apply-templates select="mods:subject" />
     <xsl:apply-templates select="mods:abstract" />
+  </xsl:template>
+
+  <xsl:template match="mods:genre">
+    <xsl:if test="normalize-space(.) = 'Dissertation'">
+      <rdf:type rdf:resource="&bibo;Thesis"/>
+      <bibo:degree rdf:resource="&bibo;degrees/ms" /> 
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="mods:subject[mods:topic]">
+    <dcterms:subject> <xsl:value-of select="mods:topic" /> </dcterms:subject>
+  </xsl:template>
+
+  <xsl:template match="mods:subject[@authority]">
+    <dcterms:subject> <xsl:value-of select="." /> </dcterms:subject>
   </xsl:template>
 
   <xsl:template match="mods:identifier[@type='uri']">
