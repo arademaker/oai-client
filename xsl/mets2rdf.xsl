@@ -56,6 +56,7 @@
         <xsl:value-of select="normalize-space(oai:header/oai:identifier)"/>
       </xsl:attribute>
       <xsl:apply-templates select="oai:metadata"/>
+      <dc:isPartOf><xsl:value-of select="oai:header/oai:setSpec"/></dc:isPartOf> 
     </rdf:Description>
     <xsl:apply-templates select="descendant::mods:name" />
   </xsl:template>
@@ -103,13 +104,14 @@
     <xsl:apply-templates select="mods:identifier" />
     <dc:language> <xsl:value-of select="mods:language/mods:languageTerm"/> </dc:language>
     <xsl:apply-templates select="mods:subject" />
+    <xsl:apply-templates select="mods:genre" />
     <xsl:apply-templates select="mods:abstract" />
   </xsl:template>
 
   <xsl:template match="mods:genre">
-    <xsl:if test="normalize-space(.) = 'Dissertation'">
+    <rdf:type rdf:resource="&bibo;Document" />
+    <xsl:if test="normalize-space(.)='Dissertation'">
       <rdf:type rdf:resource="&bibo;Thesis"/>
-      <bibo:degree rdf:resource="&bibo;degrees/ms" /> 
     </xsl:if>
   </xsl:template>
 
