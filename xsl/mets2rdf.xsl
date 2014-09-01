@@ -116,11 +116,14 @@
   </xsl:template>
 
   <xsl:template match="mods:subject[mods:topic]">
-    <dcterms:subject> <xsl:value-of select="mods:topic" /> </dcterms:subject>
+    <vivo:freetextKeyword> <xsl:value-of select="mods:topic" /> </vivo:freetextKeyword>
   </xsl:template>
 
   <xsl:template match="mods:subject[@authority]">
-    <dcterms:subject> <xsl:value-of select="." /> </dcterms:subject>
+    <vivo:hasSubjectArea rdf:parseType="Resource">
+      <rdf:type rdf:resource="&skos;Concept"/>
+      <rdfs:label rdf:datatype="&xsd;string"> <xsl:value-of select="." /> </rdfs:label>
+    </vivo:hasSubjectArea>
   </xsl:template>
 
   <xsl:template match="mods:identifier[@type='uri']">
